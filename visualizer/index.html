@@ -11,11 +11,12 @@
 <body>
     <header class="header">
         <h1>Algorithm Visualizer</h1>
-        <p>アルゴリズムの動きを、スタートボタンで可視化して理解するためのページ</p>
+        <p>アルゴリズムの動きを、見ながら理解するための学習用ページ</p>
     </header>
 
     <nav class="tabs">
         <button class="tab-button active" data-tab="sorting-tab">Sorting Visualizer</button>
+        <button class="tab-button" data-tab="graph-tab">Graph Visualizer</button>
         <button class="tab-button" data-tab="notes-tab">Algorithm Notes</button>
         <button class="tab-button" data-tab="log-tab">Study Log</button>
     </nav>
@@ -66,6 +67,64 @@
             </div>
         </section>
 
+        <!-- Graph Visualizer -->
+        <section id="graph-tab" class="tab-content">
+            <div class="panel">
+                <h2>Graph Visualizer</h2>
+
+                <div class="controls">
+                    <label>
+                        Algorithm
+                        <select id="graph-algorithm-select">
+                            <option value="bfs">BFS</option>
+                            <option value="dfs">DFS</option>
+                            <option value="dijkstra">Dijkstra</option>
+                        </select>
+                    </label>
+
+                    <label>
+                        Speed (ms)
+                        <input id="graph-speed-range" type="range" min="200" max="1500" value="700" step="100" />
+                        <span id="graph-speed-value">700</span>
+                    </label>
+
+                    <div class="button-group">
+                        <button id="graph-reset-button">Reset Graph</button>
+                        <button id="graph-start-button">Start Graph</button>
+                        <button id="graph-stop-button">Stop Graph</button>
+                    </div>
+                </div>
+
+                <div id="graph-status-box" class="status-box">
+                    グラフ可視化の準備完了。Start Graph で探索を開始します。
+                </div>
+
+                <div class="graph-layout">
+                    <div id="graph-canvas" class="graph-canvas">
+                        <!-- ノードとエッジは JavaScript で描画 -->
+                    </div>
+
+                    <div class="graph-side-panel">
+                        <h3>Graph Info</h3>
+                        <p>開始ノード: <strong>A</strong></p>
+                        <p>ノードをたどる順序や、Dijkstra の距離更新を確認できます。</p>
+
+                        <div class="legend">
+                            <div><span class="legend-box legend-default"></span>未訪問</div>
+                            <div><span class="legend-box legend-active"></span>現在注目</div>
+                            <div><span class="legend-box legend-visited"></span>訪問済み</div>
+                            <div><span class="legend-box legend-done"></span>確定済み</div>
+                        </div>
+
+                        <div class="distances-box">
+                            <h4>Dijkstra Distances</h4>
+                            <ul id="distance-list"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Notes -->
         <section id="notes-tab" class="tab-content">
             <div class="panel">
@@ -73,32 +132,47 @@
 
                 <div class="notes-card">
                     <h3>Bubble Sort</h3>
-                    <p>隣り合う要素を比較し、必要なら交換する。動きが直感的で、可視化に向いている。</p>
+                    <p>隣り合う要素を比較し、順番が逆なら交換する。動きが直感的で、学習向き。</p>
                     <p><strong>計算量:</strong> O(n^2)</p>
                 </div>
 
                 <div class="notes-card">
                     <h3>Selection Sort</h3>
-                    <p>未整列部分から最小値を選んで先頭へ置く。比較と交換の役割を理解しやすい。</p>
+                    <p>未整列部分から最小値を選んで先頭へ置く。比較と交換の違いを理解しやすい。</p>
                     <p><strong>計算量:</strong> O(n^2)</p>
                 </div>
 
                 <div class="notes-card">
                     <h3>Insertion Sort</h3>
-                    <p>左側を整列済みとして、要素を適切な位置へ挿入する。ほぼ整列済みの配列では効率が良い場合がある。</p>
+                    <p>整列済み部分へ要素を差し込む。トランプを並べ替える感覚に近い。</p>
                     <p><strong>計算量:</strong> O(n^2)</p>
                 </div>
 
                 <div class="notes-card">
                     <h3>Merge Sort</h3>
-                    <p>配列を分割してソートし、最後に統合する。分割統治法の代表例。</p>
+                    <p>分割して整列し、最後にマージする。分割統治法の代表例。</p>
                     <p><strong>計算量:</strong> O(n log n)</p>
                 </div>
 
                 <div class="notes-card">
                     <h3>Quick Sort</h3>
-                    <p>ピボットを基準に配列を分割していく。平均的に高速だが、最悪ケースでは O(n^2)。</p>
+                    <p>ピボットを基準に左右へ分けていく。平均的には高速。</p>
                     <p><strong>計算量:</strong> 平均 O(n log n), 最悪 O(n^2)</p>
+                </div>
+
+                <div class="notes-card">
+                    <h3>BFS</h3>
+                    <p>幅優先探索。キューを使って近いノードから順番に見る。重みなし最短経路に有効。</p>
+                </div>
+
+                <div class="notes-card">
+                    <h3>DFS</h3>
+                    <p>深さ優先探索。再帰やスタックで深く進む。連結成分や木構造の理解にも重要。</p>
+                </div>
+
+                <div class="notes-card">
+                    <h3>Dijkstra</h3>
+                    <p>重み付きグラフの最短経路。負の辺がないときに使う。優先度付きキューが重要。</p>
                 </div>
             </div>
         </section>
@@ -108,26 +182,47 @@
             <div class="panel">
                 <h2>Study Log</h2>
 
-                <div class="log-template">
-                    <h3>記録テンプレート</h3>
-                    <pre>
-日付:
-学んだこと:
-詰まったこと:
-理解できたこと:
-次にやること:
-          </pre>
+                <div class="log-form">
+                    <label>
+                        日付
+                        <input id="log-date" type="date" />
+                    </label>
+
+                    <label>
+                        学んだこと
+                        <textarea id="log-learned" rows="3" placeholder="例: BFS と DFS の違いを整理した"></textarea>
+                    </label>
+
+                    <label>
+                        詰まったこと
+                        <textarea id="log-stuck" rows="3" placeholder="例: Dijkstra の距離更新タイミング"></textarea>
+                    </label>
+
+                    <label>
+                        理解できたこと
+                        <textarea id="log-understood" rows="3" placeholder="例: BFS は重みなし最短経路に使える"></textarea>
+                    </label>
+
+                    <label>
+                        次にやること
+                        <textarea id="log-next" rows="3" placeholder="例: Union-Find を実装する"></textarea>
+                    </label>
+
+                    <div class="button-group">
+                        <button id="save-log-button">Save Log</button>
+                        <button id="clear-log-button">Clear Form</button>
+                        <button id="delete-log-button">Delete Saved Log</button>
+                    </div>
                 </div>
 
-                <div class="log-template">
-                    <h3>例</h3>
-                    <pre>
-日付: 2026-04-05
-学んだこと: Bubble Sort と Insertion Sort の違い
-詰まったこと: Merge Sort の merge の処理
-理解できたこと: Quick Sort は pivot の選び方が大事
-次にやること: Union-Find を実装する
-          </pre>
+                <div id="log-message" class="status-box">
+                    ログを入力して保存できます。ブラウザを閉じても保存内容は残ります。
+                </div>
+
+                <div class="notes-card">
+                    <h3>保存メモ</h3>
+                    <p>この Study Log は LocalStorage を使ってブラウザに保存します。</p>
+                    <p>学習ログを毎日少しずつ残すと、GitHub の README や issue にも転用しやすくなります。</p>
                 </div>
             </div>
         </section>
